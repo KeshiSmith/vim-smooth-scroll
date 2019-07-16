@@ -37,12 +37,13 @@ endfunction
 " speed: Scrolling speed, or the number of lines to scroll during each scrolling
 " animation
 function! s:smooth_scroll(dir, dist, duration, speed)
+  let &scroll = a:speed
   for i in range(a:dist/a:speed)
     let start = reltime()
     if a:dir ==# 'd'
-      exec "normal! ".a:speed."\<C-e>".a:speed."gj"
+      exec "normal! \<C-d>"
     else
-      exec "normal! ".a:speed."\<C-y>".a:speed."gk"
+      exec "normal! \<C-u>"
     endif
     redraw
     let elapsed = s:get_ms_since(start)
@@ -51,6 +52,7 @@ function! s:smooth_scroll(dir, dist, duration, speed)
       exec "sleep ".snooze."m"
     endif
   endfor
+  let &scroll = 0
 endfunction
 
 function! s:get_ms_since(time)
